@@ -1,0 +1,50 @@
+---
+import { SITE_URL } from '../../config/site';
+import { locales, defaultLocale, localePath, type Locale } from '../../i18n/ui';
+import { site } from '../../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string; // locale-free canonical path, e.g. /services/amc/
+  locale?: Locale;
+  noindex?: boolean;
+}
+const { title, description, path, locale = defaultLocale, noindex = false } = Astro.props;
+
+const canonical = new URL(localePath(locale, path), SITE_URL).href;
+const alternates = locales.map((l) => ({ l, href: new URL(localePath(l, path), SITE_URL).href }));
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow" />}
+{alternates.map(({ l, href }) => <link rel="alternate" hreflang={l} href={href} />)}
+<link rel="alternate" hreflang="x-default" href={new URL(localePath(defaultLocale, path), SITE_URL).href} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={locale === 'kn' ? 'kn_IN' : locale === 'hi' ? 'hi_IN' : 'en_IN'} />
+<!-- TODO: og:image — 1200x630 branded asset not yet produced (ASSET_INDEX) -->
+<meta name="twitter:card" content="summary" />
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: SITE_URL,
+  email: site.email,
+  telephone: site.phone,
+  address: site.addresses.map((a) => ({
+    '@type': 'PostalAddress',
+    streetAddress: a.lines.join(', '),
+    addressLocality: a.city,
+    addressRegion: a.state,
+    postalCode: a.postalCode,
+    addressCountry: 'IN',
+  })),
+})} />

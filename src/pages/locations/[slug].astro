@@ -1,0 +1,10 @@
+---
+import LocationDetail from '../../views/LocationDetail.astro';
+import { site } from '../../config/site';
+
+export function getStaticPaths() {
+  return site.addresses.map((a) => ({ params: { slug: a.id } }));
+}
+---
+
+<LocationDetail locale="en" slug={Astro.params.slug!} />

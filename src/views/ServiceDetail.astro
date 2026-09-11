@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import { t, type Locale } from '../i18n/ui';
+import { enabledServices, getService } from '../content/services';
+import { faqs } from '../content/misc';
+import { whatsappForService, emailLink } from '../utils/links';
+
+interface Props { locale?: Locale; slug: string; }
+const { locale = 'en' as Locale, slug } = Astro.props;
+const service = getService(slug);
+if (!service) return Astro.redirect('/404/');
+const related = enabledServices().filter((s) => s.slug !== slug && s.category === service.category).slice(0, 3);
+const path = `/services/${slug}/`;
+---
+
+<BaseLayout locale={locale} path={path} title={`${service.title} — ${site.name}`} description={service.short}>
+  <nav class="container-neel pt-6 text-sm text-muted" aria-label="Breadcrumb">
+    <a href={`/${locale === 'en' ? '' : locale + '/'}services/`}>Services</a> <span aria-hidden="true">/</span> <span class="text-ink">{service.title}</span>
+  </nav>
+
+  <section class="section-pad">
+    <div class="container-neel max-w-3xl">
+      <p class="label-mono">{service.powerType === 'electric' ? 'Electric' : service.powerType === 'diesel' ? 'Diesel' : 'All equipment'}</p>
+      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">{service.title}</h1>
+      <p class="mt-6 text-lg text-muted">{service.long}</p>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={whatsappForService(service.title)} rel="noopener" class="rounded bg-accent px-5 py-3 font-semibold text-white hover:opacity-90">{t(locale, 'cta.whatsapp')}</a>
+        <a href={emailLink(`${service.title} enquiry`)} class="rounded border border-line bg-elevated px-5 py-3 font-semibold hover:border-ink">{t(locale, 'cta.email')}</a>
+        <a href={`/${locale === 'en' ? '' : locale + '/'}request-service/`} class="rounded border-2 border-ink px-5 py-3 font-semibold hover:bg-elevated">{t(locale, 'cta.requestService')}</a>
+      </div>
+
+      {related.length && (
+        <>
+          <h2 class="mt-14 text-2xl font-bold">Related services</h2>
+          <ul class="mt-4 grid gap-4 sm:grid-cols-3">
+            {related.map((r) => (
+              <li><a href={`/${locale === 'en' ? '' : locale + '/'}services/${r.slug}/`} class="block h-full rounded border border-line bg-elevated p-5 hover:border-accent">
+                <h3 class="font-semibold">{r.title}</h3>
+              </a></li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      <h2 class="mt-14 text-2xl font-bold">Common questions</h2>
+      <div class="mt-4 divide-y divide-line rounded border border-line">
+        {faqs.slice(0, 4).map((f) => (
+          <details class="p-4"><summary class="cursor-pointer font-medium">{f.q}</summary><p class="mt-2 text-sm text-muted">{f.a}</p></details>
+        ))}
+      </div>
+
+      <p class="mt-10 text-sm text-muted">Offices: Kinnigoli (registered) and Bengaluru — Chikkabanavara (branch). {site.coverageNote}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.title,
+  description: service.short,
+  provider: { '@type': 'Organization', name: site.name, url: site.email },
+  areaServed: 'IN',
+})} />

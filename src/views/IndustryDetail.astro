@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import type { Locale } from '../i18n/ui';
+import { industries } from '../content/misc';
+
+const { locale = 'en' as Locale, slug } = Astro.props as { locale: Locale; slug: string };
+const industry = industries.find((i) => i.slug === slug);
+if (!industry) return Astro.redirect('/404/');
+const path = `/industries/${slug}/`;
+---
+
+<BaseLayout locale={locale} path={path} title={`${industry.name} Material Handling — ${site.name}`} description={`${industry.name}: forklift repair, maintenance, spare parts and rental support from NEEL ENTERPRISES.`}>
+  <section class="section-pad">
+    <div class="container-neel max-w-3xl">
+      <nav class="text-sm text-muted" aria-label="Breadcrumb"><a href={`/${locale === 'en' ? '' : locale + '/'}industries/`}>Industries</a> <span aria-hidden="true">/</span> <span class="text-ink">{industry.name}</span></nav>
+      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">{industry.name}</h1>
+      <p class="mt-6 text-lg text-muted">
+        {industry.short} We provide electric and diesel forklift repair, preventive maintenance, spare parts and rental
+        support — with the uptime-first approach that throughput-dependent operations rely on.
+      </p>
+      <a href={`/${locale === 'en' ? '' : locale + '/'}request-service/`} class="mt-8 inline-block rounded bg-accent px-5 py-3 font-semibold text-white hover:opacity-90">Request Service</a>
+    </div>
+  </section>
+</BaseLayout>

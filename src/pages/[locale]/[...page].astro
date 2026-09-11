@@ -1,0 +1,63 @@
+---
+// Locale catch-all: generates the full route set for kn/hi from the same
+// views used by the EN routes. Translations fall back to EN until the
+// dictionaries are filled (src/i18n/ui.ts, CONTENT_STATUS.md).
+import Home from '../../views/Home.astro';
+import About from '../../views/About.astro';
+import ServicesIndex from '../../views/ServicesIndex.astro';
+import ServiceDetail from '../../views/ServiceDetail.astro';
+import Industries from '../../views/Industries.astro';
+import IndustryDetail from '../../views/IndustryDetail.astro';
+import Brands from '../../views/Brands.astro';
+import Locations from '../../views/Locations.astro';
+import LocationDetail from '../../views/LocationDetail.astro';
+import Faq from '../../views/Faq.astro';
+import Contact from '../../views/Contact.astro';
+import RequestService from '../../views/RequestService.astro';
+import Legal from '../../views/Legal.astro';
+import NotFound from '../../views/NotFound.astro';
+import { enabledServices } from '../../content/services';
+import { industries } from '../../content/misc';
+import { site } from '../../config/site';
+import { locales, type Locale } from '../../i18n/ui';
+
+type Props = { locale: Locale; view?: any; slug?: string; home?: boolean; kind?: 'privacy' | 'terms' };
+
+export function getStaticPaths() {
+  const staticPages: Record<string, { view: any; kind?: 'privacy' | 'terms' }> = {
+    'about': { view: About },
+    'services': { view: ServicesIndex },
+    'industries': { view: Industries },
+    'brands': { view: Brands },
+    'locations': { view: Locations },
+    'faq': { view: Faq },
+    'contact': { view: Contact },
+    'request-service': { view: RequestService },
+    'privacy-policy': { view: Legal, kind: 'privacy' },
+    'terms-and-conditions': { view: Legal, kind: 'terms' },
+  };
+
+  const paths: { params: { locale: Locale; page: string | undefined }; props: Props }[] = [];
+  for (const locale of locales.filter((l) => l !== 'en')) {
+    paths.push({ params: { locale, page: undefined }, props: { locale, home: true } });
+    for (const [key, def] of Object.entries(staticPages)) {
+      paths.push({ params: { locale, page: key }, props: { locale, view: def.view, kind: def.kind } });
+    }
+    for (const s of enabledServices()) {
+      paths.push({ params: { locale, page: `services/${s.slug}` }, props: { locale, view: ServiceDetail, slug: s.slug } });
+    }
+    for (const i of industries) {
+      paths.push({ params: { locale, page: `industries/${i.slug}` }, props: { locale, view: IndustryDetail, slug: i.slug } });
+    }
+    for (const a of site.addresses) {
+      paths.push({ params: { locale, page: `locations/${a.id}` }, props: { locale, view: LocationDetail, slug: a.id } });
+    }
+  }
+  return paths;
+}
+
+const { locale, view, slug, home, kind } = Astro.props as Props;
+const View = home ? Home : view ?? NotFound;
+---
+
+<View locale={locale} slug={slug} kind={kind} />

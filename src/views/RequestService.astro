@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import { t, type Locale } from '../i18n/ui';
+import { enabledServices } from '../content/services';
+import { whatsappLink } from '../utils/links';
+
+const { locale = 'en' as Locale } = Astro.props;
+const svc = enabledServices();
+---
+
+<BaseLayout locale={locale} path="/request-service/" title={`Request Service — ${site.name}`} description="Request forklift service from NEEL ENTERPRISES — equipment details, fault description, location and photographs.">
+  <section class="section-pad">
+    <div class="container-neel max-w-2xl">
+      <p class="label-mono">Service request</p>
+      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">Tell us what's stopped.</h1>
+      <p class="mt-4 text-muted">Equipment → Problem → Location → Contact → Attachments. Fields marked optional can be skipped if unknown.</p>
+
+      <!--
+        Form UI complete; submission endpoint arrives in Phase 5
+        (Supabase enquiry API + Turnstile + email notification).
+        Until then the form degrades to WhatsApp/email with prefilled details.
+      -->
+      <form id="service-request" class="mt-10 space-y-8" method="get" action={whatsappLink()}>
+        <fieldset>
+          <legend class="label-mono">1 · Equipment</legend>
+          <div class="mt-3 grid gap-4 sm:grid-cols-2">
+            <label class="block text-sm font-medium">Equipment type
+              <select name="equipment_type" class="mt-1 w-full rounded border border-line bg-elevated p-2">
+                <option>Electric forklift</option><option>Diesel forklift</option>
+                <option>Pallet truck</option><option>Tow tractor</option><option>Other</option>
+              </select>
+            </label>
+            <label class="block text-sm font-medium">Brand (optional)
+              <input name="brand" class="mt-1 w-full rounded border border-line bg-elevated p-2" />
+            </label>
+            <label class="block text-sm font-medium">Model (optional)
+              <input name="model" class="mt-1 w-full rounded border border-line bg-elevated p-2" />
+            </label>
+            <label class="block text-sm font-medium">Capacity (optional)
+              <input name="capacity" class="mt-1 w-full rounded border border-line bg-elevated p-2" />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="label-mono">2 · Requirement</legend>
+          <label class="mt-3 block text-sm font-medium">What do you need?
+            <select name="requirement" class="mt-1 w-full rounded border border-line bg-elevated p-2">
+              {svc.map((s) => <option>{s.title}</option>)}
+            </select>
+          </label>
+          <label class="mt-4 block text-sm font-medium">Describe the problem (optional)
+            <textarea name="description" rows="4" class="mt-1 w-full rounded border border-line bg-elevated p-2"></textarea>
+          </label>
+          <label class="mt-4 block text-sm font-medium">Urgency
+            <select name="urgency" class="mt-1 w-full rounded border border-line bg-elevated p-2">
+              <option>Equipment stopped — urgent</option><option>Degraded but working</option><option>Planned / scheduled</option>
+            </select>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend class="label-mono">3 · Location</legend>
+          <div class="mt-3 grid gap-4 sm:grid-cols-2">
+            <label class="block text-sm font-medium">City
+              <input name="city" required class="mt-1 w-full rounded border border-line bg-elevated p-2" />
+            </label>
+            <label class="block text-sm font-medium">State (optional)
+              <input name="state" class="mt-1 w-full rounded border border-line bg-elevated p-2" />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="label-mono">4 · Contact</legend>
+          <div class="mt-3 grid gap-4 sm:grid-cols-2">
+            <label class="block text-sm font-medium">Name
+              <input name="name" required autocomplete="name" class="mt-1 w-full rounded border border-line bg-elevated p-2" />
+            </label>
+            <label class="block text-sm font-medium">Company (optional)
+              <input name="company" autocomplete="organization" class="mt-1 w-full rounded border border-line bg-elevated p-2" />
+            </label>
+            <label class="block text-sm font-medium">Phone / WhatsApp
+              <input name="phone" type="tel" required autocomplete="tel" class="mt-1 w-full rounded border border-line bg-elevated p-2" />
+            </label>
+            <label class="block text-sm font-medium">Email
+              <input name="email" type="email" required autocomplete="email" class="mt-1 w-full rounded border border-line bg-elevated p-2" />
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="label-mono">5 · Attachments</legend>
+          <!-- Phase 5: validated upload (type/size/count) to enquiry API. -->
+          <label class="mt-3 block text-sm font-medium">Equipment photographs / documents (optional)
+            <input type="file" name="attachments" multiple accept="image/*,.pdf" class="mt-1 block w-full text-sm" />
+          </label>
+          <p class="mt-1 text-xs text-muted">Until server submission is live, please also send photographs via WhatsApp.</p>
+        </fieldset>
+
+        <label class="flex items-start gap-3 text-sm">
+          <input type="checkbox" name="consent" required class="mt-1" />
+          <span>I agree that NEEL ENTERPRISES may use these details to respond to my enquiry, as described in the
+            <a class="text-accent underline" href={`/${locale === 'en' ? '' : locale + '/'}privacy-policy/`}>privacy policy</a>.</span>
+        </label>
+
+        <button type="submit" class="w-full rounded bg-accent px-5 py-3 text-lg font-semibold text-white hover:opacity-90">{t(locale, 'cta.requestService')}</button>
+        <p class="text-xs text-muted">Interim note: this form currently hands off to WhatsApp. Server-side storage, email notification and reference numbers arrive with the enquiry API (Phase 5).</p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>

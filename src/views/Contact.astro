@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import { t, type Locale } from '../i18n/ui';
+import { whatsappLink, emailLink } from '../utils/links';
+
+const { locale = 'en' as Locale } = Astro.props;
+---
+
+<BaseLayout locale={locale} path="/contact/" title={`Contact — ${site.name}`} description={`Contact NEEL ENTERPRISES: WhatsApp ${site.phoneDisplay}, email ${site.email}, offices in Kinnigoli and Bengaluru.`}>
+  <section class="section-pad">
+    <div class="container-neel max-w-3xl">
+      <p class="label-mono">Contact</p>
+      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">Talk to a technician, not a ticket queue.</h1>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2">
+        <a href={whatsappLink()} rel="noopener" class="rounded border-2 border-accent p-6 hover:bg-elevated">
+          <p class="label-mono">WhatsApp</p>
+          <p class="mt-2 text-xl font-bold">{site.phoneDisplay}</p>
+        </a>
+        <a href={emailLink()} class="rounded border-2 border-ink p-6 hover:bg-elevated">
+          <p class="label-mono">Email</p>
+          <p class="mt-2 text-xl font-bold break-all">{site.email}</p>
+        </a>
+      </div>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+        {site.addresses.map((a) => (
+          <div class="rounded border border-line bg-elevated p-6">
+            <p class="label-mono">{a.label}</p>
+            <p class="mt-2">{a.lines.join(', ')}</p>
+            <a class="mt-2 inline-block text-sm font-semibold text-accent" href={a.mapsUrl} target="_blank" rel="noopener">Google Maps ↗</a>
+          </div>
+        ))}
+      </div>
+      <a href={`/${locale === 'en' ? '' : locale + '/'}request-service/`} class="mt-10 inline-block rounded bg-accent px-5 py-3 font-semibold text-white hover:opacity-90">{t(locale, 'cta.requestService')} →</a>
+    </div>
+  </section>
+</BaseLayout>

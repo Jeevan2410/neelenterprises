@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t, type Locale } from '../i18n/ui';
+
+const { locale = 'en' as Locale } = Astro.props;
+---
+
+<BaseLayout locale={locale} path="/404/" title="Page not found — NEEL ENTERPRISES" description="The page you requested does not exist." noindex>
+  <section class="section-pad grid min-h-[60vh] place-items-center">
+    <div class="container-neel max-w-xl text-center">
+      <p class="label-mono">Error 404</p>
+      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">{t(locale, 'common.notFoundTitle')}</h1>
+      <p class="mt-4 text-muted">{t(locale, 'common.notFoundBody')}</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href={`/${locale === 'en' ? '' : locale + '/'}`} class="rounded bg-accent px-5 py-3 font-semibold text-white hover:opacity-90">{t(locale, 'common.backHome')}</a>
+        <a href={`/${locale === 'en' ? '' : locale + '/'}services/`} class="rounded border border-line bg-elevated px-5 py-3 font-semibold hover:border-ink">{t(locale, 'cta.exploreServices')}</a>
+        <a href={`/${locale === 'en' ? '' : locale + '/'}contact/`} class="rounded border border-line bg-elevated px-5 py-3 font-semibold hover:border-ink">{t(locale, 'nav.contact')}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

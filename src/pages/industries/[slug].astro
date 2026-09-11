@@ -1,0 +1,10 @@
+---
+import IndustryDetail from '../../views/IndustryDetail.astro';
+import { industries } from '../../content/misc';
+
+export function getStaticPaths() {
+  return industries.map((i) => ({ params: { slug: i.slug } }));
+}
+---
+
+<IndustryDetail locale="en" slug={Astro.params.slug!} />

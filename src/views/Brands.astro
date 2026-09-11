@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import type { Locale } from '../i18n/ui';
+import { brands } from '../content/misc';
+
+const { locale = 'en' as Locale } = Astro.props;
+---
+
+<BaseLayout locale={locale} path="/brands/" title={`Brand Experience — ${site.name}`} description="NEEL ENTERPRISES technical team experience: Jungheinrich, Toyota, BT, Jost's, Maini, Macneill, Baka, Godrej, Voltas, Yale.">
+  <section class="section-pad">
+    <div class="container-neel max-w-3xl">
+      <p class="label-mono">Brands</p>
+      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">Equipment we know inside out.</h1>
+      <p class="mt-6 text-lg text-muted">
+        Our technical team's experience spans the major material handling brands used across Indian industry.
+        This indicates technical experience with the equipment — not authorized dealership or partnership.
+      </p>
+      <ul class="mt-10 grid grid-cols-3 gap-4 sm:grid-cols-4">
+        {brands.map((b) => (
+          <li class="grid place-items-center rounded border border-line bg-elevated p-4">
+            <img src={b.logo} alt={b.name} loading="lazy" width="120" height="60" class="h-12 w-auto object-contain" />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

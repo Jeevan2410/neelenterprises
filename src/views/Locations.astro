@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import type { Locale } from '../i18n/ui';
+
+const { locale = 'en' as Locale } = Astro.props;
+---
+
+<BaseLayout locale={locale} path="/locations/" title={`Locations — ${site.name}`} description="NEEL ENTERPRISES offices: registered office in Kinnigoli (574150) and branch office in Bengaluru — Chikkabanavara (560090).">
+  <section class="section-pad">
+    <div class="container-neel">
+      <p class="label-mono">Locations</p>
+      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">Where we are.</h1>
+      <p class="mt-4 max-w-2xl text-lg text-muted">{site.coverageNote}</p>
+      <div class="mt-10 grid gap-4 md:grid-cols-2">
+        {site.addresses.map((a) => (
+          <a href={`/${locale === 'en' ? '' : locale + '/'}locations/${a.id}/`} class="rounded border border-line bg-elevated p-8 hover:border-accent transition-colors">
+            <p class="label-mono">{a.label}</p>
+            <h2 class="mt-2 text-xl font-bold">{a.city}</h2>
+            <p class="mt-2 text-muted">{a.lines.join(', ')}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

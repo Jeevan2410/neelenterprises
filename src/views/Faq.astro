@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import type { Locale } from '../i18n/ui';
+import { faqs } from '../content/misc';
+
+const { locale = 'en' as Locale } = Astro.props;
+---
+
+<BaseLayout locale={locale} path="/faq/" title={`FAQ — ${site.name}`} description="Frequently asked questions about NEEL ENTERPRISES forklift repair, maintenance, batteries, spare parts, rental and coverage.">
+  <section class="section-pad">
+    <div class="container-neel max-w-3xl">
+      <p class="label-mono">FAQ</p>
+      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">Questions, answered.</h1>
+      <div class="mt-10 divide-y divide-line rounded border border-line">
+        {faqs.map((f) => (
+          <details class="p-5">
+            <summary class="cursor-pointer font-semibold">{f.q}</summary>
+            <p class="mt-2 text-muted">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+})} />

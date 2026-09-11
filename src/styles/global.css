@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+/* ---- Design tokens: deliberate light AND dark systems (not inverted) ---- */
+:root {
+  --bg: #f6f6f4;
+  --bg-elevated: #ffffff;
+  --ink: #14161a;
+  --ink-muted: #5a6068;
+  --line: #d8dad6;
+  --accent: #b45309;          /* industrial amber, used sparingly */
+  --accent-ink: #7c3a06;
+  --steel: #3d434c;
+  --focus: #1d4ed8;
+}
+html.dark {
+  --bg: #0e1013;
+  --bg-elevated: #171a1f;
+  --ink: #eceeeb;
+  --ink-muted: #9aa1a8;
+  --line: #2a2e35;
+  --accent: #f0a437;
+  --accent-ink: #f5b95e;
+  --steel: #b7bdc6;
+  --focus: #7cb0ff;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elevated: var(--bg-elevated);
+  --color-ink: var(--ink);
+  --color-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --font-display: "Archivo", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html { background: var(--bg); color: var(--ink); }
+body { font-family: var(--font-display); }
+
+/* Motion tokens — everything respects reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible focus everywhere */
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Utility primitives (kept small; components live in .astro files) */
+.container-neel { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+.label-mono { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+.section-pad { @apply py-16 md:py-24; }
+.hairline { border-top: 1px solid var(--line); }

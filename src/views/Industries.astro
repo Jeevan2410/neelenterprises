@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import type { Locale } from '../i18n/ui';
+import { industries } from '../content/misc';
+
+const { locale = 'en' as Locale } = Astro.props;
+---
+
+<BaseLayout locale={locale} path="/industries/" title={`Industries Served — ${site.name}`} description="Material handling service and spare parts for automobile, engineering, pharma and warehousing industries.">
+  <section class="section-pad">
+    <div class="container-neel">
+      <p class="label-mono">Industries</p>
+      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">Industries we work with.</h1>
+      <p class="mt-4 max-w-2xl text-lg text-muted">We work closely with automobile, engineering, pharma and warehousing operations on their material handling challenges.</p>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2">
+        {industries.map((i) => (
+          <a href={`/${locale === 'en' ? '' : locale + '/'}industries/${i.slug}/`} class="rounded border border-line bg-elevated p-8 hover:border-accent transition-colors">
+            <h2 class="text-xl font-bold">{i.name}</h2>
+            <p class="mt-2 text-muted">{i.short}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

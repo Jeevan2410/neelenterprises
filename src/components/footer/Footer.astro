@@ -1,0 +1,57 @@
+---
+import { site } from '../../config/site';
+import { t, localePath, type Locale } from '../../i18n/ui';
+import { enabledServices } from '../../content/services';
+import { whatsappLink, emailLink } from '../../utils/links';
+
+const { locale } = Astro.props as { locale: Locale };
+const svc = enabledServices().slice(0, 10);
+---
+
+<footer class="border-t border-line bg-elevated">
+  <div class="container-neel grid gap-10 py-12 md:grid-cols-4">
+    <div>
+      <img src="/images/brand/logo.png" alt="NEEL ENTERPRISES logo" width="48" height="50" class="rounded bg-bg" />
+      <p class="mt-4 text-sm text-muted">{t(locale, 'footer.company')}</p>
+      <p class="mt-2 text-sm font-medium">{t(locale, 'footer.coverage')}</p>
+    </div>
+    <nav aria-label="Services">
+      <h2 class="label-mono">{t(locale, 'nav.services')}</h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        {svc.map((s) => <li><a class="text-muted hover:text-ink" href={localePath(locale, `/services/${s.slug}/`)}>{s.title}</a></li>)}
+        <li><a class="font-medium text-accent" href={localePath(locale, '/services/')}>{t(locale, 'cta.exploreServices')} →</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Company">
+      <h2 class="label-mono">Company</h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><a class="text-muted hover:text-ink" href={localePath(locale, '/about/')}>{t(locale, 'nav.about')}</a></li>
+        <li><a class="text-muted hover:text-ink" href={localePath(locale, '/industries/')}>{t(locale, 'nav.industries')}</a></li>
+        <li><a class="text-muted hover:text-ink" href={localePath(locale, '/brands/')}>{t(locale, 'nav.brands')}</a></li>
+        <li><a class="text-muted hover:text-ink" href={localePath(locale, '/locations/')}>{t(locale, 'nav.locations')}</a></li>
+        <li><a class="text-muted hover:text-ink" href={localePath(locale, '/faq/')}>{t(locale, 'nav.faq')}</a></li>
+        <li><a class="text-muted hover:text-ink" href={localePath(locale, '/privacy-policy/')}>{t(locale, 'footer.privacy')}</a></li>
+        <li><a class="text-muted hover:text-ink" href={localePath(locale, '/terms-and-conditions/')}>{t(locale, 'footer.terms')}</a></li>
+      </ul>
+    </nav>
+    <div>
+      <h2 class="label-mono">Contact</h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><a class="font-medium text-accent" href={whatsappLink()} rel="noopener">{t(locale, 'cta.whatsapp')} — {site.phoneDisplay}</a></li>
+        <li><a class="text-muted hover:text-ink" href={emailLink()}>{site.email}</a></li>
+        {site.addresses.map((a) => (
+          <li class="text-muted">
+            <span class="font-medium text-ink">{a.label}:</span><br />
+            {a.lines.join(', ')}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  <div class="hairline">
+    <div class="container-neel flex flex-wrap items-center justify-between gap-2 py-4 text-xs text-muted">
+      <span>© {new Date().getFullYear()} {site.name}. {site.coverageNote}</span>
+      <!-- TODO: social links — none supplied yet (site-settings driven later) -->
+    </div>
+  </div>
+</footer>

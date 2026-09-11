@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import type { Locale } from '../i18n/ui';
+
+interface Props { locale?: Locale; kind: 'privacy' | 'terms'; }
+const { locale = 'en' as Locale, kind } = Astro.props;
+const isPrivacy = kind === 'privacy';
+const path = isPrivacy ? '/privacy-policy/' : '/terms-and-conditions/';
+---
+
+<BaseLayout locale={locale} path={path} title={`${isPrivacy ? 'Privacy Policy' : 'Terms & Conditions'} — ${site.name}`} description={isPrivacy ? 'How NEEL ENTERPRISES handles enquiry information.' : 'Terms and conditions for use of the NEEL ENTERPRISES website.'}>
+  <section class="section-pad">
+    <div class="container-neel max-w-2xl prose-headings:font-bold">
+      <h1 class="text-4xl font-black tracking-tight">{isPrivacy ? 'Privacy Policy' : 'Terms & Conditions'}</h1>
+
+      {isPrivacy ? (
+        <div class="mt-6 space-y-5 text-muted">
+          <p>NEEL ENTERPRISES ({site.addresses[0].lines.join(', ')}) collects the information you submit through our service request form, WhatsApp or email — such as your name, company, contact details, location, equipment details and any photographs — solely to respond to your enquiry and provide service.</p>
+          <p>We do not sell your information. Photographs and documents are used only to assess your equipment and requirement.</p>
+          <p>Questions about this policy: <a class="text-accent underline" href={`mailto:${site.email}`}>{site.email}</a>.</p>
+          <!-- TODO: legal review — business must confirm retention period, grievance officer, and any third-party processors (Turnstile, Supabase, Cloudinary) before launch. -->
+        </div>
+      ) : (
+        <div class="mt-6 space-y-5 text-muted">
+          <p>This website provides information about NEEL ENTERPRISES' services. Content is provided for general information; service scope, availability and terms are confirmed at the time of enquiry.</p>
+          <p>Brand names on this site indicate technical experience with that equipment and do not imply authorized dealership, partnership or endorsement.</p>
+          <p>Contact: <a class="text-accent underline" href={`mailto:${site.email}`}>{site.email}</a> · {site.phoneDisplay}.</p>
+          <!-- TODO: legal review — jurisdiction, governing law, GST/registration details pending from business. -->
+        </div>
+      )}
+      <p class="mt-8 text-xs text-muted/70">Last reviewed: 2026-09-11. Pending review by the business.</p>
+    </div>
+  </section>
+</BaseLayout>

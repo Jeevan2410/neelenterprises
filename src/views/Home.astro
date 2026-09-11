@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import { t, type Locale } from '../i18n/ui';
+import { enabledServices } from '../content/services';
+import { industries, brands } from '../content/misc';
+import { whatsappLink, emailLink } from '../utils/links';
+
+const { locale = 'en' as Locale } = Astro.props;
+const svc = enabledServices();
+---
+
+<BaseLayout locale={locale} path="/" title={`${site.name} — Electric & Diesel Forklift Repair, Maintenance, Spare Parts & Rental`} description={site.description}>
+  <!-- HERO -->
+  <section class="border-b border-line">
+    <div class="container-neel section-pad">
+      <p class="label-mono">{site.tagline} · Kinnigoli × Bengaluru</p>
+      <h1 class="mt-4 max-w-4xl text-4xl font-black leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
+        {t(locale, 'hero.headline')}
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg text-muted">{t(locale, 'hero.sub')}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={whatsappLink()} rel="noopener" class="rounded bg-accent px-5 py-3 font-semibold text-white hover:opacity-90">{t(locale, 'cta.whatsapp')}</a>
+        <a href={emailLink()} class="rounded border border-line bg-elevated px-5 py-3 font-semibold hover:border-ink">{t(locale, 'cta.email')}</a>
+        <a href={`/${locale === 'en' ? '' : locale + '/'}request-service/`} class="rounded border-2 border-ink px-5 py-3 font-semibold hover:bg-elevated">{t(locale, 'cta.requestService')}</a>
+      </div>
+      <!-- 3D placeholder: ForkliftScene island mounts here in Phase 4 -->
+      <div class="mt-12 aspect-[21/9] w-full rounded border border-dashed border-line bg-elevated/40 grid place-items-center" aria-hidden="true">
+        <span class="label-mono">Interactive forklift — Phase 4</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE PROBLEM (visual, no fabricated stats) -->
+  <section class="section-pad border-b border-line">
+    <div class="container-neel grid gap-8 md:grid-cols-2">
+      <h2 class="text-3xl font-bold tracking-tight md:text-4xl">When your forklift stops, your operation shouldn't.</h2>
+      <p class="text-lg text-muted">
+        Every hour a forklift sits unavailable, throughput waits with it. NEEL ENTERPRISES exists to put material
+        handling equipment back to work — and keep it there: repair, preventive maintenance, spares and rental from one
+        technical team.
+      </p>
+    </div>
+  </section>
+
+  <!-- ELECTRIC × DIESEL -->
+  <section class="section-pad border-b border-line">
+    <div class="container-neel grid gap-8 md:grid-cols-2">
+      <div class="rounded border border-line bg-elevated p-8">
+        <p class="label-mono">Electric</p>
+        <h3 class="mt-2 text-2xl font-bold">Battery · Controller · Charger · Motor</h3>
+        <p class="mt-3 text-muted">Traction battery sales, service and reconditioning, traction controller repair, charger service and electric drive systems.</p>
+      </div>
+      <div class="rounded border border-line bg-elevated p-8">
+        <p class="label-mono">Diesel</p>
+        <h3 class="mt-2 text-2xl font-bold">Engine · Transmission · Hydraulics</h3>
+        <p class="mt-3 text-muted">Engine and transmission overhauling, hydraulic repair and fuel systems — core stated capabilities of our technical team.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section-pad border-b border-line">
+    <div class="container-neel">
+      <h2 class="text-3xl font-bold tracking-tight md:text-4xl">{t(locale, 'nav.services')}</h2>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {svc.map((s) => (
+          <li>
+            <a href={`/${locale === 'en' ? '' : locale + '/'}services/${s.slug}/`} class="group block h-full rounded border border-line bg-elevated p-6 hover:border-accent transition-colors">
+              <p class="label-mono">{s.powerType === 'electric' ? 'ELECTRIC' : s.powerType === 'diesel' ? 'DIESEL' : 'ALL EQUIPMENT'}</p>
+              <h3 class="mt-2 text-lg font-semibold group-hover:text-accent">{s.title}</h3>
+              <p class="mt-2 text-sm text-muted">{s.short}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ENGINEERING CAPABILITY (profile-supported facts only) -->
+  <section class="section-pad border-b border-line">
+    <div class="container-neel grid gap-8 md:grid-cols-2">
+      <div>
+        <h2 class="text-3xl font-bold tracking-tight">Engineering capability</h2>
+        <ul class="mt-6 space-y-3 text-muted">
+          <li>— {site.facts.yearsExperience} years' professional experience in material handling equipment.</li>
+          <li>— Qualified technical staff, including dedicated technical assistants.</li>
+          <li>— Engine and transmission overhauling.</li>
+          <li>— Battery sales, service and reconditioning.</li>
+          <li>— Traction controller repair and service.</li>
+          <li>— Quick service and spare-parts delivery.</li>
+          <li>— Cost-effective solutions.</li>
+        </ul>
+      </div>
+      <div class="rounded border border-line bg-elevated p-8">
+        <p class="label-mono">Brand experience</p>
+        <p class="mt-3">Technical experience with:</p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          {brands.map((b) => <img src={b.logo} alt={b.name} loading="lazy" width="90" height="45" class="h-10 w-auto rounded bg-bg object-contain p-1" />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section class="section-pad border-b border-line">
+    <div class="container-neel">
+      <h2 class="text-3xl font-bold tracking-tight md:text-4xl">{t(locale, 'nav.industries')}</h2>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {industries.map((i) => (
+          <a href={`/${locale === 'en' ? '' : locale + '/'}industries/${i.slug}/`} class="rounded border border-line bg-elevated p-6 hover:border-accent transition-colors">
+            <h3 class="text-lg font-semibold">{i.name}</h3>
+            <p class="mt-2 text-sm text-muted">{i.short}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATIONS -->
+  <section class="section-pad border-b border-line">
+    <div class="container-neel grid gap-8 md:grid-cols-2">
+      {site.addresses.map((a) => (
+        <div class="rounded border border-line bg-elevated p-8">
+          <p class="label-mono">{a.label}</p>
+          <p class="mt-2 font-medium">{a.lines.join(', ')}</p>
+          <a class="mt-3 inline-block text-sm font-semibold text-accent" href={a.mapsUrl} rel="noopener" target="_blank">Open in Google Maps ↗</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CONTACT / CONVERSION -->
+  <section class="section-pad">
+    <div class="container-neel rounded border-2 border-ink p-8 text-center md:p-16">
+      <h2 class="text-3xl font-black tracking-tight md:text-5xl">Keep your operation moving.</h2>
+      <p class="mx-auto mt-4 max-w-xl text-muted">Tell us what's stopped — equipment, fault, location — and get it back to work.</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href={whatsappLink()} rel="noopener" class="rounded bg-accent px-5 py-3 font-semibold text-white hover:opacity-90">{t(locale, 'cta.whatsapp')}</a>
+        <a href={emailLink()} class="rounded border border-line bg-elevated px-5 py-3 font-semibold hover:border-ink">{t(locale, 'cta.email')}</a>
+        <a href={`/${locale === 'en' ? '' : locale + '/'}request-service/`} class="rounded border-2 border-ink px-5 py-3 font-semibold hover:bg-elevated">{t(locale, 'cta.requestService')}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

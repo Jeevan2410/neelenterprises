@@ -1,0 +1,51 @@
+---
+import '../styles/global.css';
+import SEO from '../components/seo/SEO.astro';
+import Header from '../components/navigation/Header.astro';
+import Footer from '../components/footer/Footer.astro';
+import MobileCtaBar from '../components/navigation/MobileCtaBar.astro';
+import { t, type Locale } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  locale?: Locale;
+  noindex?: boolean;
+}
+const { locale = 'en' as Locale, ...seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang={locale} class="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <SEO {...seo} locale={locale} />
+    <script is:inline>
+      // Theme before paint to avoid flash. System preference by default; user choice persisted.
+      (function () {
+        try {
+          var saved = localStorage.getItem('neel-theme');
+          var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.classList.toggle('dark', dark);
+        } catch (e) { /* no-op */ }
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-elevated focus:px-4 focus:py-2">
+      Skip to content
+    </a>
+    <Header locale={locale} currentPath={seo.path} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+    <MobileCtaBar locale={locale} />
+  </body>
+</html>

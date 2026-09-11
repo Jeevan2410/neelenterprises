@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+import { t, type Locale } from '../i18n/ui';
+import { enabledServices } from '../content/services';
+
+const { locale = 'en' as Locale } = Astro.props;
+const svc = enabledServices();
+const groups = [
+  { key: 'repair', label: 'Repair & Overhauling' },
+  { key: 'maintenance', label: 'Maintenance' },
+  { key: 'power', label: 'Electric Power Systems' },
+  { key: 'parts', label: 'Spare Parts' },
+  { key: 'rental', label: 'Rental & Sales' },
+] as const;
+---
+
+<BaseLayout locale={locale} path="/services/" title={`Forklift Services — ${site.name}`} description="Electric and diesel forklift repair, preventive maintenance, AMC, battery service, traction controller repair, engine and transmission overhauling, spare parts and forklift rental.">
+  <section class="section-pad">
+    <div class="container-neel">
+      <p class="label-mono">Services</p>
+      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">Everything that keeps a fleet moving.</h1>
+      <p class="mt-4 max-w-2xl text-lg text-muted">Repair, maintenance, power systems, parts and rental — from one technical team with {site.facts.yearsExperience} years in material handling equipment.</p>
+
+      {groups.map((g) => {
+        const items = svc.filter((s) => s.category === g.key);
+        return items.length ? (
+          <div class="mt-12">
+            <h2 class="text-2xl font-bold">{g.label}</h2>
+            <ul class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {items.map((s) => (
+                <li>
+                  <a href={`/${locale === 'en' ? '' : locale + '/'}services/${s.slug}/`} class="group block h-full rounded border border-line bg-elevated p-6 hover:border-accent transition-colors">
+                    <h3 class="text-lg font-semibold group-hover:text-accent">{s.title}</h3>
+                    <p class="mt-2 text-sm text-muted">{s.short}</p>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null;
+      })}
+
+      <div class="mt-16 rounded border-2 border-ink p-8 text-center">
+        <p class="text-xl font-bold">Not sure what you need?</p>
+        <p class="mt-2 text-muted">Describe the equipment and the problem — we'll point you the right way.</p>
+        <a href={`/${locale === 'en' ? '' : locale + '/'}request-service/`} class="mt-6 inline-block rounded bg-accent px-5 py-3 font-semibold text-white hover:opacity-90">{t(locale, 'cta.requestService')}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
