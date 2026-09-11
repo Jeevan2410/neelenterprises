@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 2026-09-11 (session 3 — Phase 2)
+### Added
+- Self-hosted fonts: Archivo Variable + JetBrains Mono Variable (Fontsource).
+- Motion system: reveal-on-scroll (`[data-reveal]` + IntersectionObserver, JS-optional), hero word-stagger, CSS brand marquee — all reduced-motion safe.
+- Components: `Button.astro` (3 variants), `SectionHeading.astro`, `ServiceCard.astro`, `details.faq` styling.
+- Homepage sections: parts/equipment gallery (8 catalog images, restricted copy), FAQ teaser, locations, conversion block.
+- `@astrojs/check` wired (`npm run check`) — 0 errors.
+- docs/DESIGN_SYSTEM.md.
+
+### Changed
+- Expanded design tokens (sunken surface, line-strong, accent-strong, motion durations/easing, focus).
+- Header: active-page underline animation, aria-current, mono controls, button component.
+- FAQ + ServiceDetail FAQ blocks restyled.
+
+### Fixed
+- TypeScript union error on staff tiers (About view) via `StaffTier` interface.
+
 ## 2026-09-11 (session 2)
 ### Added
 - Astro 5 + TypeScript strict + Tailwind v4 architecture; `@astrojs/sitemap`.

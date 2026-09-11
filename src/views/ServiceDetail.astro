@@ -45,9 +45,9 @@ const path = `/services/${slug}/`;
       )}
 
       <h2 class="mt-14 text-2xl font-bold">Common questions</h2>
-      <div class="mt-4 divide-y divide-line rounded border border-line">
+      <div class="mt-4 divide-y divide-line rounded-sm border border-line bg-elevated">
         {faqs.slice(0, 4).map((f) => (
-          <details class="p-4"><summary class="cursor-pointer font-medium">{f.q}</summary><p class="mt-2 text-sm text-muted">{f.a}</p></details>
+          <details class="faq p-4"><summary class="font-medium">{f.q}</summary><p class="mt-2 text-sm text-muted">{f.a}</p></details>
         ))}
       </div>
 

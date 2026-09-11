@@ -1,6 +1,8 @@
 // Single canonical source of business truth. Never hard-code these elsewhere.
 export const SITE_URL = import.meta.env.SITE_URL ?? 'https://neel-enterprises.example.com';
 
+export interface StaffTier { years: number; brands?: readonly string[]; note?: string }
+
 export const site = {
   name: 'NEEL ENTERPRISES',
   tagline: 'Material Handling Engineering',
@@ -51,7 +53,7 @@ export const site = {
       { years: 18, brands: ['Jungheinrich', 'Toyota & BT', "Jost's", 'Maini', 'Macneill', 'Baka', 'Godrej', 'Voltas'] },
       { years: 14, brands: ['Maini', 'Yale', 'Jungheinrich', "Jost's", 'Baka', 'Macneill', 'Godrej', 'Voltas'] },
       { years: 4, note: 'Maintenance of material handling equipment' },
-    ],
+    ] as StaffTier[],
     technicalAssistants: 3,
   },
 } as const;

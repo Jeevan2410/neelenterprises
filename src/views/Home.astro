@@ -3,39 +3,56 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config/site';
 import { t, type Locale } from '../i18n/ui';
 import { enabledServices } from '../content/services';
-import { industries, brands } from '../content/misc';
+import { industries, brands, faqs } from '../content/misc';
 import { whatsappLink, emailLink } from '../utils/links';
+import Button from '../components/ui/Button.astro';
+import SectionHeading from '../components/typography/SectionHeading.astro';
+import ServiceCard from '../components/services/ServiceCard.astro';
 
 const { locale = 'en' as Locale } = Astro.props;
+const base = locale === 'en' ? '' : `/${locale}`;
 const svc = enabledServices();
+const headline = t(locale, 'hero.headline').split(' ');
+const gallery = [
+  { src: '/images/gallery/hydraulic-cylinders.jpg', alt: 'Hydraulic cylinders for forklift lifting systems' },
+  { src: '/images/gallery/ac-motor-controller.jpg', alt: 'AC motor controller (inverter drive) for electric forklifts' },
+  { src: '/images/gallery/traction-battery-cells.jpg', alt: 'Traction battery cells for electric material handling equipment' },
+  { src: '/images/gallery/polyurethane-drive-wheel.jpg', alt: 'Polyurethane drive wheel for forklifts and pallet trucks' },
+  { src: '/images/gallery/mast-guide-roller-bearing.jpg', alt: 'Forklift mast guide and track roller bearing' },
+  { src: '/images/gallery/pallet-truck-pump-linkage.jpg', alt: 'Manual pallet truck hydraulic pump and wheel linkage set' },
+  { src: '/images/gallery/brake-shoes-pad.jpg', alt: 'Forklift brake shoes and pads' },
+  { src: '/images/gallery/operator-seat.jpg', alt: 'Forklift operator seat' },
+] as const;
 ---
 
 <BaseLayout locale={locale} path="/" title={`${site.name} — Electric & Diesel Forklift Repair, Maintenance, Spare Parts & Rental`} description={site.description}>
   <!-- HERO -->
   <section class="border-b border-line">
     <div class="container-neel section-pad">
-      <p class="label-mono">{site.tagline} · Kinnigoli × Bengaluru</p>
-      <h1 class="mt-4 max-w-4xl text-4xl font-black leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
-        {t(locale, 'hero.headline')}
+      <p class="label-mono" data-reveal>{site.tagline} · Kinnigoli × Bengaluru</p>
+      <h1 class="mt-5 max-w-5xl text-4xl font-black leading-[1.04] tracking-tight md:text-6xl lg:text-7xl">
+        {headline.map((word, i) => (
+          <span class="hero-word" style={`--word-delay: ${i * 70}ms`}>{word}{' '}</span>
+        ))}
       </h1>
-      <p class="mt-6 max-w-2xl text-lg text-muted">{t(locale, 'hero.sub')}</p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href={whatsappLink()} rel="noopener" class="rounded bg-accent px-5 py-3 font-semibold text-white hover:opacity-90">{t(locale, 'cta.whatsapp')}</a>
-        <a href={emailLink()} class="rounded border border-line bg-elevated px-5 py-3 font-semibold hover:border-ink">{t(locale, 'cta.email')}</a>
-        <a href={`/${locale === 'en' ? '' : locale + '/'}request-service/`} class="rounded border-2 border-ink px-5 py-3 font-semibold hover:bg-elevated">{t(locale, 'cta.requestService')}</a>
+      <p class="mt-6 max-w-2xl text-lg text-muted" data-reveal style="--reveal-delay: 350ms">{t(locale, 'hero.sub')}</p>
+      <div class="mt-8 flex flex-wrap gap-3" data-reveal style="--reveal-delay: 500ms">
+        <Button href={whatsappLink()} external>{t(locale, 'cta.whatsapp')}</Button>
+        <Button href={emailLink()} variant="quiet">{t(locale, 'cta.email')}</Button>
+        <Button href={`${base}/request-service/`} variant="outline">{t(locale, 'cta.requestService')}</Button>
       </div>
       <!-- 3D placeholder: ForkliftScene island mounts here in Phase 4 -->
-      <div class="mt-12 aspect-[21/9] w-full rounded border border-dashed border-line bg-elevated/40 grid place-items-center" aria-hidden="true">
+      <div class="mt-14 grid aspect-[21/9] w-full place-items-center rounded-sm border border-dashed border-line bg-elevated/40" aria-hidden="true">
         <span class="label-mono">Interactive forklift — Phase 4</span>
       </div>
     </div>
   </section>
 
   <!-- THE PROBLEM (visual, no fabricated stats) -->
-  <section class="section-pad border-b border-line">
+  <section class="section-pad border-b border-line bg-sunken/40">
     <div class="container-neel grid gap-8 md:grid-cols-2">
-      <h2 class="text-3xl font-bold tracking-tight md:text-4xl">When your forklift stops, your operation shouldn't.</h2>
-      <p class="text-lg text-muted">
+      <h2 class="text-3xl font-bold tracking-tight md:text-4xl" data-reveal>When your forklift stops, your operation shouldn't.</h2>
+      <p class="text-lg text-muted" data-reveal style="--reveal-delay: 120ms">
         Every hour a forklift sits unavailable, throughput waits with it. NEEL ENTERPRISES exists to put material
         handling equipment back to work — and keep it there: repair, preventive maintenance, spares and rental from one
         technical team.
@@ -45,14 +62,14 @@ const svc = enabledServices();
 
   <!-- ELECTRIC × DIESEL -->
   <section class="section-pad border-b border-line">
-    <div class="container-neel grid gap-8 md:grid-cols-2">
-      <div class="rounded border border-line bg-elevated p-8">
-        <p class="label-mono">Electric</p>
+    <div class="container-neel grid gap-6 md:grid-cols-2">
+      <div class="card" data-reveal>
+        <p class="label-mono text-accent">Electric</p>
         <h3 class="mt-2 text-2xl font-bold">Battery · Controller · Charger · Motor</h3>
         <p class="mt-3 text-muted">Traction battery sales, service and reconditioning, traction controller repair, charger service and electric drive systems.</p>
       </div>
-      <div class="rounded border border-line bg-elevated p-8">
-        <p class="label-mono">Diesel</p>
+      <div class="card" data-reveal style="--reveal-delay: 120ms">
+        <p class="label-mono text-accent">Diesel</p>
         <h3 class="mt-2 text-2xl font-bold">Engine · Transmission · Hydraulics</h3>
         <p class="mt-3 text-muted">Engine and transmission overhauling, hydraulic repair and fuel systems — core stated capabilities of our technical team.</p>
       </div>
@@ -62,27 +79,19 @@ const svc = enabledServices();
   <!-- SERVICES -->
   <section class="section-pad border-b border-line">
     <div class="container-neel">
-      <h2 class="text-3xl font-bold tracking-tight md:text-4xl">{t(locale, 'nav.services')}</h2>
-      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {svc.map((s) => (
-          <li>
-            <a href={`/${locale === 'en' ? '' : locale + '/'}services/${s.slug}/`} class="group block h-full rounded border border-line bg-elevated p-6 hover:border-accent transition-colors">
-              <p class="label-mono">{s.powerType === 'electric' ? 'ELECTRIC' : s.powerType === 'diesel' ? 'DIESEL' : 'ALL EQUIPMENT'}</p>
-              <h3 class="mt-2 text-lg font-semibold group-hover:text-accent">{s.title}</h3>
-              <p class="mt-2 text-sm text-muted">{s.short}</p>
-            </a>
-          </li>
-        ))}
+      <SectionHeading eyebrow="01" title={t(locale, 'nav.services')} />
+      <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {svc.map((s, i) => <li style={`--reveal-delay: ${(i % 3) * 80}ms`}><ServiceCard service={s} locale={locale} /></li>)}
       </ul>
     </div>
   </section>
 
-  <!-- ENGINEERING CAPABILITY (profile-supported facts only) -->
-  <section class="section-pad border-b border-line">
-    <div class="container-neel grid gap-8 md:grid-cols-2">
-      <div>
-        <h2 class="text-3xl font-bold tracking-tight">Engineering capability</h2>
-        <ul class="mt-6 space-y-3 text-muted">
+  <!-- ENGINEERING CAPABILITY + BRAND MARQUEE (profile-supported facts only) -->
+  <section class="section-pad border-b border-line bg-sunken/40">
+    <div class="container-neel grid gap-10 md:grid-cols-2">
+      <div data-reveal>
+        <SectionHeading eyebrow="02" title="Engineering capability" />
+        <ul class="mt-8 space-y-3 text-muted">
           <li>— {site.facts.yearsExperience} years' professional experience in material handling equipment.</li>
           <li>— Qualified technical staff, including dedicated technical assistants.</li>
           <li>— Engine and transmission overhauling.</li>
@@ -92,23 +101,55 @@ const svc = enabledServices();
           <li>— Cost-effective solutions.</li>
         </ul>
       </div>
-      <div class="rounded border border-line bg-elevated p-8">
+      <div class="rounded-sm border border-line bg-elevated p-8" data-reveal style="--reveal-delay: 120ms">
         <p class="label-mono">Brand experience</p>
         <p class="mt-3">Technical experience with:</p>
         <div class="mt-4 flex flex-wrap gap-3">
-          {brands.map((b) => <img src={b.logo} alt={b.name} loading="lazy" width="90" height="45" class="h-10 w-auto rounded bg-bg object-contain p-1" />)}
+          {brands.map((b) => <img src={b.logo} alt={b.name} loading="lazy" width="90" height="45" class="h-10 w-auto rounded-sm border border-line bg-bg object-contain p-1.5" />)}
         </div>
       </div>
     </div>
   </section>
 
-  <!-- INDUSTRIES -->
+  <!-- BRAND MARQUEE -->
+  <section class="marquee overflow-hidden border-b border-line py-8" aria-label="Brands our team has experience with">
+    <div class="marquee-track">
+      {[...brands, ...brands].map((b, i) => (
+        <img
+          src={b.logo}
+          alt={i < brands.length ? b.name : ''}
+          aria-hidden={i >= brands.length ? 'true' : undefined}
+          loading="lazy"
+          width="120" height="48"
+          class="h-12 w-auto object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- GALLERY — restricted copy: catalog imagery, no "our workshop" claims -->
   <section class="section-pad border-b border-line">
     <div class="container-neel">
-      <h2 class="text-3xl font-bold tracking-tight md:text-4xl">{t(locale, 'nav.industries')}</h2>
-      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {industries.map((i) => (
-          <a href={`/${locale === 'en' ? '' : locale + '/'}industries/${i.slug}/`} class="rounded border border-line bg-elevated p-6 hover:border-accent transition-colors">
+      <SectionHeading eyebrow="03" title="Parts & equipment we service" />
+      <p class="mt-3 max-w-2xl text-muted" data-reveal>Representative categories of components and equipment we repair, supply and support.</p>
+      <ul class="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
+        {gallery.map((g, i) => (
+          <li class="group relative overflow-hidden rounded-sm border border-line bg-elevated" data-reveal style={`--reveal-delay: ${(i % 4) * 60}ms`}>
+            <img src={g.src} alt={g.alt} loading="lazy" width="400" height="300"
+              class="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section class="section-pad border-b border-line bg-sunken/40">
+    <div class="container-neel">
+      <SectionHeading eyebrow="04" title={t(locale, 'nav.industries')} />
+      <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {industries.map((i, idx) => (
+          <a href={`${base}/industries/${i.slug}/`} class="card" data-reveal style={`--reveal-delay: ${idx * 80}ms`}>
             <h3 class="text-lg font-semibold">{i.name}</h3>
             <p class="mt-2 text-sm text-muted">{i.short}</p>
           </a>
@@ -117,28 +158,49 @@ const svc = enabledServices();
     </div>
   </section>
 
-  <!-- LOCATIONS -->
+  <!-- FAQ TEASER -->
   <section class="section-pad border-b border-line">
-    <div class="container-neel grid gap-8 md:grid-cols-2">
-      {site.addresses.map((a) => (
-        <div class="rounded border border-line bg-elevated p-8">
-          <p class="label-mono">{a.label}</p>
-          <p class="mt-2 font-medium">{a.lines.join(', ')}</p>
-          <a class="mt-3 inline-block text-sm font-semibold text-accent" href={a.mapsUrl} rel="noopener" target="_blank">Open in Google Maps ↗</a>
-        </div>
-      ))}
+    <div class="container-neel grid gap-10 md:grid-cols-[1fr_1.4fr]">
+      <div data-reveal>
+        <SectionHeading eyebrow="05" title={t(locale, 'nav.faq')} />
+        <Button href={`${base}/faq/`} variant="outline" class="mt-6">All questions →</Button>
+      </div>
+      <div class="divide-y divide-line rounded-sm border border-line bg-elevated" data-reveal style="--reveal-delay: 120ms">
+        {faqs.slice(0, 5).map((f) => (
+          <details class="faq p-5">
+            <summary class="font-semibold">{f.q}</summary>
+            <p class="mt-3 text-sm text-muted">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATIONS -->
+  <section class="section-pad border-b border-line bg-sunken/40">
+    <div class="container-neel">
+      <SectionHeading eyebrow="06" title={t(locale, 'nav.locations')} />
+      <div class="mt-10 grid gap-4 md:grid-cols-2">
+        {site.addresses.map((a, idx) => (
+          <div class="card" data-reveal style={`--reveal-delay: ${idx * 100}ms`}>
+            <p class="label-mono">{a.label}</p>
+            <p class="mt-2 font-medium">{a.lines.join(', ')}</p>
+            <a class="mt-3 inline-block text-sm font-semibold text-accent" href={a.mapsUrl} rel="noopener" target="_blank">Open in Google Maps ↗</a>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
   <!-- CONTACT / CONVERSION -->
   <section class="section-pad">
-    <div class="container-neel rounded border-2 border-ink p-8 text-center md:p-16">
+    <div class="container-neel rounded-sm border-2 border-ink p-8 text-center md:p-16" data-reveal>
       <h2 class="text-3xl font-black tracking-tight md:text-5xl">Keep your operation moving.</h2>
       <p class="mx-auto mt-4 max-w-xl text-muted">Tell us what's stopped — equipment, fault, location — and get it back to work.</p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <a href={whatsappLink()} rel="noopener" class="rounded bg-accent px-5 py-3 font-semibold text-white hover:opacity-90">{t(locale, 'cta.whatsapp')}</a>
-        <a href={emailLink()} class="rounded border border-line bg-elevated px-5 py-3 font-semibold hover:border-ink">{t(locale, 'cta.email')}</a>
-        <a href={`/${locale === 'en' ? '' : locale + '/'}request-service/`} class="rounded border-2 border-ink px-5 py-3 font-semibold hover:bg-elevated">{t(locale, 'cta.requestService')}</a>
+        <Button href={whatsappLink()} external>{t(locale, 'cta.whatsapp')}</Button>
+        <Button href={emailLink()} variant="quiet">{t(locale, 'cta.email')}</Button>
+        <Button href={`${base}/request-service/`} variant="outline">{t(locale, 'cta.requestService')}</Button>
       </div>
     </div>
   </section>

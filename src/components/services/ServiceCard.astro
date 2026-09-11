@@ -1,0 +1,15 @@
+---
+import type { Service } from '../../content/services';
+
+interface Props { service: Service; locale: string; }
+const { service, locale } = Astro.props;
+const base = locale === 'en' ? '' : `/${locale}`;
+const powerLabel = service.powerType === 'electric' ? 'ELECTRIC' : service.powerType === 'diesel' ? 'DIESEL' : 'ALL EQUIPMENT';
+---
+
+<a href={`${base}/services/${service.slug}/`} class="card group" data-reveal>
+  <p class="label-mono">{powerLabel}</p>
+  <h3 class="mt-2 text-lg font-semibold transition-colors group-hover:text-accent">{service.title}</h3>
+  <p class="mt-2 text-sm text-muted">{service.short}</p>
+  <span class="mt-4 inline-block font-mono text-xs text-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true">→</span>
+</a>

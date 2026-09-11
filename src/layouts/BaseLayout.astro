@@ -1,4 +1,6 @@
 ---
+import '@fontsource-variable/archivo';
+import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import SEO from '../components/seo/SEO.astro';
 import Header from '../components/navigation/Header.astro';
@@ -47,5 +49,6 @@ const { locale = 'en' as Locale, ...seo } = Astro.props;
     </main>
     <Footer locale={locale} />
     <MobileCtaBar locale={locale} />
+    <script src="../scripts/reveal.ts"></script>
   </body>
 </html>
