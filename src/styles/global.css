@@ -192,3 +192,26 @@ details.faq > summary::after {
   transition: transform var(--dur-fast) var(--ease-out);
 }
 details.faq[open] > summary::after { transform: rotate(45deg); }
+
+/* 3D hotspot labels (ForkliftScene) */
+.forklift-hotspot {
+  position: absolute;
+  top: 0; left: 0;
+  pointer-events: auto;
+  padding: 0.3rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.forklift-hotspot::before { content: '●'; color: var(--accent); margin-right: 0.4em; font-size: 0.6em; vertical-align: 1px; }
+.forklift-hotspot:hover, .forklift-hotspot:focus-visible { background: var(--accent); color: #fff; }
+.forklift-hotspot.is-behind { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .forklift-hotspot { transition: none; } }

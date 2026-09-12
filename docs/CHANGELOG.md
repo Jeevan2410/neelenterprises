@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2026-09-12 (session 5 — Phase 4)
+### Added
+- 3D layer `src/components/3d/`: `ForkliftModel.ts` (original forklift built from Three.js primitives — no copyrighted model; replaceable for a licensed .glb later), `ForkliftScene.ts` (renderer, lights, scroll-linked camera orbit, hotspot projection), `ForkliftScene.astro` (island), `ForkliftFallback.astro`.
+- Component hotspots are real links to battery/controller/engine/hydraulic/tyre service pages.
+- Loading discipline: Three.js dynamic-imported only after the canvas nears the viewport (`client:visible` + IntersectionObserver gate); loads on homepages only; skipped on reduced-motion / ≤640px / no-WebGL with link-card fallback; full cleanup/dispose on teardown.
+- `.forklift-hotspot` styles; `three` + `@types/three` dependencies (reason recorded in DECISIONS).
+
 ## 2026-09-12 (session 4 — Phase 3)
 ### Added
 - `Breadcrumbs.astro`: visible breadcrumb nav + matching BreadcrumbList JSON-LD, used on service/industry/location detail pages.

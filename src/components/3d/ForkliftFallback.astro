@@ -1,0 +1,19 @@
+---
+// Static fallback shown when WebGL is unavailable, the device is low-power,
+// reduced motion is requested, or the scene fails (brief §79). Contains the
+// same component-to-service links as the 3D hotspots.
+const { base } = Astro.props as { base: string };
+const links = [
+  { label: 'Battery · Service & Reconditioning', href: `${base}/services/battery-service/` },
+  { label: 'Traction Controller Repair', href: `${base}/services/traction-controller-repair/` },
+  { label: 'Engine Overhauling', href: `${base}/services/engine-overhauling/` },
+  { label: 'Hydraulic Repair', href: `${base}/services/hydraulic-repair/` },
+  { label: 'Tyre Service & Replacement', href: `${base}/services/tyre-service/` },
+];
+---
+
+<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+  {links.map((l) => (
+    <a href={l.href} class="card text-sm font-semibold">{l.label}</a>
+  ))}
+</div>

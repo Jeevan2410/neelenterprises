@@ -1,0 +1,81 @@
+---
+// Interactive forklift island — homepage only, client:visible + dynamic
+// import so Three.js never loads on other pages or before scroll.
+const { base } = Astro.props as { base: string };
+---
+
+<div id="forklift-experience" class="relative">
+  <div class="relative aspect-[16/9] w-full overflow-hidden rounded-sm border border-line bg-elevated/40 sm:aspect-[21/9]">
+    <canvas id="forklift-canvas" class="h-full w-full" aria-hidden="true"></canvas>
+    <div id="forklift-labels" class="pointer-events-none absolute inset-0"></div>
+    <noscript>
+      <div class="absolute inset-0 grid place-items-center p-6">
+        <slot name="fallback" />
+      </div>
+    </noscript>
+  </div>
+
+  <script>
+    (async () => {
+      const root = document.getElementById('forklift-experience');
+      const canvas = document.getElementById('forklift-canvas') as HTMLCanvasElement | null;
+      const labelLayer = document.getElementById('forklift-labels');
+      const base = root?.dataset.base ?? '';
+      if (!root || !canvas || !labelLayer) return;
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const smallScreen = window.matchMedia('(max-width: 640px)').matches;
+      const webgl = (() => {
+        try {
+          const c = document.createElement('canvas');
+          return !!(c.getContext('webgl2') ?? c.getContext('webgl'));
+        } catch { return false; }
+      })();
+
+      if (reduced || smallScreen || !webgl) {
+        root.querySelector('slot-fallback, [data-fallback]') ?? null;
+        // Swap canvas for the static fallback markup already in the DOM.
+        const holder = canvas.parentElement!;
+        holder.innerHTML = '';
+        holder.className = 'p-6';
+        const div = document.createElement('div');
+        div.dataset.fallback = '1';
+        holder.appendChild(div);
+        const links = [
+          ['Battery · Service & Reconditioning', '/services/battery-service/'],
+          ['Traction Controller Repair', '/services/traction-controller-repair/'],
+          ['Engine Overhauling', '/services/engine-overhauling/'],
+          ['Hydraulic Repair', '/services/hydraulic-repair/'],
+          ['Tyre Service & Replacement', '/services/tyre-service/'],
+        ] as const;
+        const grid = document.createElement('div');
+        grid.className = 'grid h-full place-content-center gap-3 sm:grid-cols-2';
+        for (const [label, href] of links) {
+          const a = document.createElement('a');
+          a.href = base + href; a.textContent = label;
+          a.className = 'card text-sm font-semibold';
+          grid.appendChild(a);
+        }
+        div.appendChild(grid);
+        return;
+      }
+
+      try {
+        // Lazy: only pull Three.js in when the canvas nears the viewport.
+        if ('IntersectionObserver' in window) {
+          await new Promise<void>((resolve) => {
+            const io = new IntersectionObserver(
+              (entries) => { if (entries.some((e) => e.isIntersecting)) { io.disconnect(); resolve(); } },
+              { rootMargin: '200px' }
+            );
+            io.observe(canvas);
+          });
+        }
+        const { mountForkliftScene } = await import('./ForkliftScene');
+        mountForkliftScene({ canvas, labelLayer, baseHref: base });
+      } catch (err) {
+        console.warn('Forklift scene failed, leaving static fallback.', err);
+      }
+    })();
+  </script>
+</div>

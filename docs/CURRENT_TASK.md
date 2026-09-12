@@ -1,7 +1,7 @@
 # CURRENT_TASK
 
-**Phase 3 complete** (breadcrumbs + JSON-LD, service-page enrichment, internal-link graph; build + check pass). Do not redo: Phases 1–3 work listed in CHANGELOG.
+**Phase 4 complete** (3D forklift island live on homepages with fallbacks). Do not redo: Phases 1–4 (see CHANGELOG).
 
-**Next: Phase 4 — Advanced experience.** Build `components/3d/` layer (ForkliftScene/Model/Camera/Interaction/Fallback); placeholder forklift constructed from Three.js primitives behind the replaceable `ForkliftModel`; dynamic `import('three')` on `client:visible` homepage island only; scroll-linked camera; hotspot interactions mapping components → service pages; skip entirely on reduced-motion / no-WebGL / small screens (poster fallback).
+**Next: Phase 5 — Database & enquiry pipeline.** Supabase Postgres schema via `database/migrations/` (see DATABASE_SCHEMA.md); server endpoint for `/request-service/` (Cloudflare Pages function or Supabase edge — decide against SSR adapter requirements); Turnstile; email abstraction (`sendEnquiryNotification`); enquiry reference numbers; real form submission replacing interim WhatsApp handoff. **Blocked on user env vars** (SUPABASE_URL/keys, TURNSTILE keys) — migrations and code can be written and documented first; `wrangler`-based local path documented in DEPLOYMENT.md.
 
-Build debt: eslint deferred to Phase 9.
+Then: Phase 6 admin, Phase 7 Cloudinary, Phase 8 SEO final pass, Phase 9 QA, Phase 10 CI/CD.

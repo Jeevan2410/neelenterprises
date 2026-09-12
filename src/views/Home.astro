@@ -8,6 +8,8 @@ import { whatsappLink, emailLink } from '../utils/links';
 import Button from '../components/ui/Button.astro';
 import SectionHeading from '../components/typography/SectionHeading.astro';
 import ServiceCard from '../components/services/ServiceCard.astro';
+import ForkliftScene from '../components/3d/ForkliftScene.astro';
+import ForkliftFallback from '../components/3d/ForkliftFallback.astro';
 
 const { locale = 'en' as Locale } = Astro.props;
 const base = locale === 'en' ? '' : `/${locale}`;
@@ -41,9 +43,13 @@ const gallery = [
         <Button href={emailLink()} variant="quiet">{t(locale, 'cta.email')}</Button>
         <Button href={`${base}/request-service/`} variant="outline">{t(locale, 'cta.requestService')}</Button>
       </div>
-      <!-- 3D placeholder: ForkliftScene island mounts here in Phase 4 -->
-      <div class="mt-14 grid aspect-[21/9] w-full place-items-center rounded-sm border border-dashed border-line bg-elevated/40" aria-hidden="true">
-        <span class="label-mono">Interactive forklift — Phase 4</span>
+      <!-- Interactive forklift: Three.js island, dynamic import, fallbacks for
+           reduced-motion / small screens / no WebGL (brief §10–12, §79) -->
+      <div class="mt-14" data-reveal>
+        <p class="label-mono mb-3">Explore the machine — each component links to its service</p>
+        <ForkliftScene client:visible base={base}>
+          <ForkliftFallback slot="fallback" base={base} />
+        </ForkliftScene>
       </div>
     </div>
   </section>
