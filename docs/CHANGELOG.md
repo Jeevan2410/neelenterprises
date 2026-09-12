@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-09-12 (session 7 — Phases 8 & 10)
+### Added
+- OG/social preview image (1200x630, 52KB) generated from brand tokens; `og:image` + `twitter:card summary_large_image` on all pages.
+- GitHub Actions CI (`.github/workflows/ci.yml`): install → `astro check` → build → SEO smoke checks (sitemap, robots, 404, structured data, hreflang, route availability, /admin disallow).
+
 ## 2026-09-12 (session 6 — Phase 5)
 ### Added
 - `database/migrations/0001_enquiries.sql`: enquiries + enquiry_attachments tables, indexes, RLS (anon insert-only).

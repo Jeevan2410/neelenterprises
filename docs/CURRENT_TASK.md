@@ -1,7 +1,7 @@
 # CURRENT_TASK
 
-**Phase 4 complete** (3D forklift island live on homepages with fallbacks). Do not redo: Phases 1–4 (see CHANGELOG).
+**Phases 1–5, 8, 10 code-complete.** Build + check pass; CI workflow pushed.
 
-**Next: Phase 5 — Database & enquiry pipeline.** Supabase Postgres schema via `database/migrations/` (see DATABASE_SCHEMA.md); server endpoint for `/request-service/` (Cloudflare Pages function or Supabase edge — decide against SSR adapter requirements); Turnstile; email abstraction (`sendEnquiryNotification`); enquiry reference numbers; real form submission replacing interim WhatsApp handoff. **Blocked on user env vars** (SUPABASE_URL/keys, TURNSTILE keys) — migrations and code can be written and documented first; `wrangler`-based local path documented in DEPLOYMENT.md.
+**Next: Phase 6 — Admin.** `/admin` with auth (Supabase Auth), enquiries list/status, services enable/disable, FAQ editing. Blocker: needs Supabase project + admin account from business. Phase 7 (Cloudinary) deliberately deferred until media volume justifies it (brief §106).
 
-Then: Phase 6 admin, Phase 7 Cloudinary, Phase 8 SEO final pass, Phase 9 QA, Phase 10 CI/CD.
+**Non-code blockers for launch (business inputs):** domain, env vars (SUPABASE_URL/SERVICE_ROLE_KEY, optional RESEND/TURNSTILE), DB migration run, real photos, transparent logo, translations confirmation. See PROJECT_STATE.md "Remaining to launch".

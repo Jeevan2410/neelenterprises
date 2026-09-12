@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck (astro check)
+        run: npx astro check
+
+      - name: Build
+        run: npm run build
+        env:
+          SITE_URL: https://neel-enterprises.example.com
+
+      - name: SEO smoke checks
+        run: |
+          test -f dist/sitemap-index.xml || { echo "missing sitemap"; exit 1; }
+          test -f dist/robots.txt || { echo "missing robots.txt"; exit 1; }
+          test -f dist/404.html || { echo "missing 404"; exit 1; }
+          grep -q 'Disallow: /admin' dist/robots.txt || { echo "robots must disallow /admin"; exit 1; }
+          grep -q 'application/ld+json' dist/index.html || { echo "missing structured data on home"; exit 1; }
+          grep -q 'hreflang' dist/index.html || { echo "missing hreflang"; exit 1; }
+          for p in about services contact request-service faq locations privacy-policy terms-and-conditions; do
+            test -f "dist/$p/index.html" || { echo "missing route: $p"; exit 1; }
+          done
+          echo "SEO smoke checks passed"

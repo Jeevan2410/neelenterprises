@@ -1,22 +1,27 @@
 # PROJECT STATE — NEEL ENTERPRISES WEBSITE
 
-Last updated: 2026-09-11
+Last updated: 2026-09-12
 
 ```
 PROJECT_STATUS:
   phase: development
-  current_phase: phase-5-complete-awaiting-phase-6
-  database_status: schema-migrations-ready (apply at deploy; env vars pending from business)
-  seo_status: framework + per-page BreadcrumbList live; internal-link graph complete
-  build_status: passing (103 pages, verified)
-  database_status: not-started (phase 5)
+  current_phase: phases-1-5-8-10-code-complete
+  build_status: passing (103 pages, CI workflow live)
+  database_status: migrations-ready (await Supabase project + env vars from business)
   admin_status: not-started (phase 6)
-  seo_status: framework-live (titles, canonical, hreflang, OG, Organization JSON-LD, FAQPage on /faq, LocalBusiness on location pages, sitemap, robots)
-  3d_status: pending-model (phase 4; placeholder slot exists in hero)
-  cloudinary_status: pending
-  domain_status: pending (SITE_URL env placeholder)
-  production_status: not-deployed
+  seo_status: complete for current content (titles, canonical, hreflang, OG+Twitter w/ image, sitemap, robots, JSON-LD incl. breadcrumbs)
+  3d_status: placeholder-primitives-live (licensed .glb pending — swap point in ForkliftModel.ts)
+  cloudinary_status: pending (phase 7 — only if media volume justifies)
+  domain_status: pending (SITE_URL placeholder)
+  production_status: not-deployed (needs: Cloudflare Pages connect + env vars + DB migration)
 ```
+
+## Remaining to launch
+
+1. Business inputs: domain, Supabase project, Resend/Turnstile keys, real workshop photos, transparent logo, social URLs, services enabled/disabled confirmation.
+2. Phase 6 admin (enquiries viewer + auth) — recommended before go-live since enquiries land in the DB.
+3. kn/hi translations.
+4. Phase 9 QA pass (a11y/contrast/responsive/Lighthouse) on final content.
 
 ## Phase 1 delivered (2026-09-11)
 
