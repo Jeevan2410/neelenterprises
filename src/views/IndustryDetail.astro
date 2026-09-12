@@ -1,25 +1,38 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import { site } from '../config/site';
 import type { Locale } from '../i18n/ui';
 import { industries } from '../content/misc';
+import { enabledServices } from '../content/services';
 
 const { locale = 'en' as Locale, slug } = Astro.props as { locale: Locale; slug: string };
 const industry = industries.find((i) => i.slug === slug);
 if (!industry) return Astro.redirect('/404/');
+const base = locale === 'en' ? '' : `/${locale}`;
 const path = `/industries/${slug}/`;
 ---
 
 <BaseLayout locale={locale} path={path} title={`${industry.name} Material Handling — ${site.name}`} description={`${industry.name}: forklift repair, maintenance, spare parts and rental support from NEEL ENTERPRISES.`}>
   <section class="section-pad">
     <div class="container-neel max-w-3xl">
-      <nav class="text-sm text-muted" aria-label="Breadcrumb"><a href={`/${locale === 'en' ? '' : locale + '/'}industries/`}>Industries</a> <span aria-hidden="true">/</span> <span class="text-ink">{industry.name}</span></nav>
-      <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">{industry.name}</h1>
-      <p class="mt-6 text-lg text-muted">
+      <Breadcrumbs locale={locale} crumbs={[
+        { label: 'Industries', href: `${base}/industries/` },
+        { label: industry.name, href: `${base}/industries/${slug}/` },
+      ]} />
+      <h1 class="mt-8 text-4xl font-black tracking-tight md:text-5xl" data-reveal>{industry.name}</h1>
+      <p class="mt-6 text-lg text-muted" data-reveal style="--reveal-delay: 100ms">
         {industry.short} We provide electric and diesel forklift repair, preventive maintenance, spare parts and rental
         support — with the uptime-first approach that throughput-dependent operations rely on.
       </p>
-      <a href={`/${locale === 'en' ? '' : locale + '/'}request-service/`} class="mt-8 inline-block rounded bg-accent px-5 py-3 font-semibold text-white hover:opacity-90">Request Service</a>
+      <a href={`${base}/request-service/`} class="btn btn-primary mt-8">Request Service</a>
+
+      <h2 class="mt-14 text-2xl font-bold">Services for {industry.name.toLowerCase()} operations</h2>
+      <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+        {enabledServices().slice(0, 8).map((s) => (
+          <li><a class="text-accent hover:underline" href={`${base}/services/${s.slug}/`}>{s.title}</a></li>
+        ))}
+      </ul>
     </div>
   </section>
 </BaseLayout>

@@ -2,6 +2,36 @@ export interface Brand { name: string; logo: string; }
 export interface Industry { slug: string; name: string; short: string; }
 export interface Faq { q: string; a: string; }
 
+// Category-level coverage statements — derived only from the supplied company
+// profile; no invented procedures (brief §93). Used on service detail pages.
+export const coverageByCategory: Record<string, string[]> = {
+  repair: [
+    'Fault diagnosis and assessment of your equipment',
+    'Repair using qualified technical staff',
+    'Genuine-quality spare parts where replacement is required',
+  ],
+  maintenance: [
+    'Inspection, lubrication and adjustment on an agreed schedule',
+    'Replacement of wear parts before they fail',
+    'Planning tailored to your fleet and site',
+  ],
+  power: [
+    'Electric power-system diagnostics',
+    'Battery sales, service and reconditioning capability',
+    'Traction controller and charger expertise',
+  ],
+  parts: [
+    'Quality spare parts for material handling equipment',
+    'In-time supply — a stated commitment of the company',
+    'Support identifying the correct part for your equipment',
+  ],
+  rental: [
+    'Equipment supplied per your capacity and duration requirement',
+    'Service support from our technical team',
+    'Availability confirmed at enquiry',
+  ],
+};
+
 // Displayed ONLY as "technical experience with" — never partners/dealers (DECISIONS, brief §4).
 export const brands: Brand[] = [
   { name: 'Jungheinrich', logo: '/images/brands/jungheinrich.png' },

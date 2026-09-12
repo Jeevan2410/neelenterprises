@@ -1,0 +1,39 @@
+---
+// Breadcrumb UI + matching BreadcrumbList JSON-LD (brief §27/§28: schema must
+// match visible content). crumbs: [{ label, href }] — last crumb is current.
+import { SITE_URL } from '../../config/site';
+import { localePath, type Locale } from '../../i18n/ui';
+
+interface Crumb { label: string; href: string; }
+const { crumbs, locale = 'en' as Locale } = Astro.props as { crumbs: Crumb[]; locale?: Locale };
+---
+
+<nav class="pt-6 text-sm text-muted" aria-label="Breadcrumb">
+  <ol class="flex flex-wrap items-center gap-1.5">
+    <li><a class="hover:text-ink" href={localePath(locale, '/')}>Home</a></li>
+    {crumbs.slice(0, -1).map((c) => (
+      <li class="flex items-center gap-1.5">
+        <span class="font-mono text-xs" aria-hidden="true">/</span>
+        <a class="hover:text-ink" href={c.href}>{c.label}</a>
+      </li>
+    ))}
+    <li class="flex items-center gap-1.5">
+      <span class="font-mono text-xs" aria-hidden="true">/</span>
+      <span class="font-medium text-ink" aria-current="page">{crumbs.at(-1)!.label}</span>
+    </li>
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL(localePath(locale, '/'), SITE_URL).href },
+    ...crumbs.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 2,
+      name: c.label,
+      item: new URL(c.href, SITE_URL).href,
+    })),
+  ],
+})} />

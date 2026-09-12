@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2026-09-12 (session 4 — Phase 3)
+### Added
+- `Breadcrumbs.astro`: visible breadcrumb nav + matching BreadcrumbList JSON-LD, used on service/industry/location detail pages.
+- Service detail enrichment: verified scope section (category-level coverage map in `misc.ts`), locations block, industry-context links, FAQ relevance filter, conversion block.
+- Industry detail pages: services-for-industry links (internal-link graph §58).
+- FAQ page: conversion fallback block (request service / explore services).
+
 ## 2026-09-11 (session 3 — Phase 2)
 ### Added
 - Self-hosted fonts: Archivo Variable + JetBrains Mono Variable (Fontsource).

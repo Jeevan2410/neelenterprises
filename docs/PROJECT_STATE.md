@@ -5,7 +5,8 @@ Last updated: 2026-09-11
 ```
 PROJECT_STATUS:
   phase: development
-  current_phase: phase-2-complete-awaiting-phase-3
+  current_phase: phase-3-complete-awaiting-phase-4
+  seo_status: framework + per-page BreadcrumbList live; internal-link graph complete
   build_status: passing (103 pages, verified)
   database_status: not-started (phase 5)
   admin_status: not-started (phase 6)

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 import { site } from '../config/site';
 import type { Locale } from '../i18n/ui';
 import { enabledServices } from '../content/services';
@@ -15,8 +16,11 @@ const svc = enabledServices().slice(0, 6);
 <BaseLayout locale={locale} path={path} title={`Forklift Service in ${loc.city} — ${site.name}`} description={`${loc.label} of NEEL ENTERPRISES in ${loc.city}, ${loc.state} ${loc.postalCode}. Electric and diesel forklift repair, maintenance, spare parts and rental enquiries welcome.`}>
   <section class="section-pad">
     <div class="container-neel max-w-3xl">
-      <nav class="text-sm text-muted" aria-label="Breadcrumb"><a href={`/${locale === 'en' ? '' : locale + '/'}locations/`}>Locations</a> <span aria-hidden="true">/</span> <span class="text-ink">{loc.city}</span></nav>
-      <p class="label-mono mt-6">{loc.label}</p>
+      <Breadcrumbs locale={locale} crumbs={[
+        { label: 'Locations', href: `/${locale === 'en' ? '' : locale + '/'}locations/` },
+        { label: loc.city, href: path },
+      ]} />
+      <p class="label-mono mt-8">{loc.label}</p>
       <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">{loc.city}</h1>
       <address class="mt-6 not-italic text-lg text-muted">{loc.lines.map((l) => <span class="block">{l}</span>)}</address>
       <div class="mt-6 flex flex-wrap gap-3">
