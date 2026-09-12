@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 2026-09-12 (session 6 — Phase 5)
+### Added
+- `database/migrations/0001_enquiries.sql`: enquiries + enquiry_attachments tables, indexes, RLS (anon insert-only).
+- Enquiry pipeline: `functions/api/enquiry.ts` (Cloudflare Pages Function — Turnstile verify, honeypot, server-side validation via `src/lib/enquiry.ts`, Supabase REST insert with service role, email notification, crypto-random reference number, WhatsApp follow-up link).
+- Email abstraction `src/lib/email.ts` (Resend HTTP API; no-op fallback when unconfigured so enquiries never fail on email).
+- Request-service form now POSTs to `/api/enquiry` with success state (reference number, WhatsApp follow-up), error state, and WhatsApp handoff fallback when the endpoint is unreachable.
+
+### Security
+- Reference randomness switched from `Math.random` to `crypto.getRandomValues` (Mimosa finding).
+
+### Note
+- Live operation requires env vars (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, optional RESEND_API_KEY / TURNSTILE keys) configured in Cloudflare Pages + applying the migration. Until then the form falls back to WhatsApp handoff gracefully.
+
 ## 2026-09-12 (session 5 — Phase 4)
 ### Added
 - 3D layer `src/components/3d/`: `ForkliftModel.ts` (original forklift built from Three.js primitives — no copyrighted model; replaceable for a licensed .glb later), `ForkliftScene.ts` (renderer, lights, scroll-linked camera orbit, hotspot projection), `ForkliftScene.astro` (island), `ForkliftFallback.astro`.

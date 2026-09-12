@@ -5,8 +5,8 @@ Last updated: 2026-09-11
 ```
 PROJECT_STATUS:
   phase: development
-  current_phase: phase-4-complete-awaiting-phase-5
-  3d_status: placeholder-primitives-live (licensed .glb pending — swap point documented in ForkliftModel.ts)
+  current_phase: phase-5-complete-awaiting-phase-6
+  database_status: schema-migrations-ready (apply at deploy; env vars pending from business)
   seo_status: framework + per-page BreadcrumbList live; internal-link graph complete
   build_status: passing (103 pages, verified)
   database_status: not-started (phase 5)
