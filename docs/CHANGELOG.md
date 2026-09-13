@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2026-09-13 (session 8 — Phase 6)
+### Added
+- Admin panel `/admin` (noindex): Supabase Auth sign-in, enquiries dashboard (latest 200, status new/contacted/closed inline updates), XSS-escaped rendering.
+- `database/migrations/0002_admin_access.sql`: read/update policies for authenticated users.
+- `.env` created locally with the business's Supabase/Cloudinary credentials (git-ignored, verified); `PUBLIC_SUPABASE_*` build vars for the client login.
+
+### Security note
+- Cloudinary API secret was shared in chat — recommend rotating it in the Cloudinary dashboard before production use (never committed; stored only in `.env`).
+
 ## 2026-09-12 (session 7 — Phases 8 & 10)
 ### Added
 - OG/social preview image (1200x630, 52KB) generated from brand tokens; `og:image` + `twitter:card summary_large_image` on all pages.

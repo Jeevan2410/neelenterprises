@@ -21,9 +21,13 @@ Pages Functions in `functions/` deploy automatically (POST /api/enquiry).
 | `TURNSTILE_SECRET_KEY` | optional | form bot protection |
 
 ### Database setup
-1. Create a Supabase project.
-2. Run `database/migrations/0001_enquiries.sql` in the SQL editor.
-3. Set the two SUPABASE env vars in Cloudflare Pages (production + preview).
+1. Supabase project exists: `bbfssdsqaphoounexdpv` (credentials in local `.env`, never committed).
+2. Run `database/migrations/0001_enquiries.sql` then `0002_admin_access.sql` in the Supabase SQL editor.
+3. Create your admin login: Supabase Dashboard → Authentication → Users → Add user (email + password).
+4. Set env vars in Cloudflare Pages (production + preview): `SITE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (Dashboard → Settings → API → service_role — server-side only), `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`, optional `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`.
+
+### Cloudinary
+Credentials held in `.env` only. Integration deferred to Phase 7 (not yet used by any code).
 
 ### Local behaviour without env vars
 The form detects an unreachable `/api/enquiry` and hands off to WhatsApp,
