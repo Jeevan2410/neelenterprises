@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-09-13 (session 9 — Phase 9 testing)
+### Added
+- Vitest unit tests (18) for critical paths: enquiry validation (required fields, email/phone formats, honeypot spam detection, truncation, locale fallback, null bodies), reference-number format/uniqueness, email body composition, WhatsApp/email link utilities.
+- CI now runs `vitest` between typecheck and build.
+
 ## 2026-09-13 (session 8 — Phase 6)
 ### Added
 - Admin panel `/admin` (noindex): Supabase Auth sign-in, enquiries dashboard (latest 200, status new/contacted/closed inline updates), XSS-escaped rendering.
